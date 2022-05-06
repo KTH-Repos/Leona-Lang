@@ -44,7 +44,7 @@ public class Lexer {
         while(m.find()) {
 
             if (m.start() != inputPos && (isComment == false)) {
-                tokens.add(new Token(TokenType.INVALID));
+                tokens.add(new Token(TokenType.INVALID, currentRow));
             }
 
             if(m.group().contains("\n")) {    //Om vi har en ny rad så har vi gått ett steg till. 
