@@ -26,13 +26,62 @@ public class Lexer {
 
     public Lexer(InputStream in) throws java.io.Exception {
         String input = Lexer.readInput(in);
-        Pattern tokenPattern = Pattern.compile("FORW|BACK|LEFT|RIGHT|DOWN|UP|COLOR|REP|#[A-Fa-f0-9]{6}|\\.|\"|[1-9][0-9]*|%(?!.*\\n).*|\\s+");   //lägg till regex för de olika tokens vi ska använda
+        Pattern tokenPattern = Pattern.compile("FORW|BACK|LEFT|RIGHT|DOWN|UP|COLOR|REP|#[A-Fa-f0-9]{6}|\\.|\"|[1-9][0-9]*|%|\\s+");   //lägg till regex för de olika tokens vi ska använda, regex for comments --> %(?!.*\\n).*
         Matcher m = tokenPattern.matcher(input);
         int inputPos = 0;
         tokens = new ArrayList<Token>();
+        boolean isComment;     //false by default
         currentToken = 0;
+        int currentRow = 1;     //Kolla vilken rad kommandon ligger på
         // Hitta förekomster av tokens/whitespace i indata
         while(m.find()) {
+
+            if (m.start() != inputPos && (isComment == false)) {
+                tokens.add(new Token(TokenType.INVALID));
+            }
+
+            if(m.group().contains("\n")) {    //Om vi har en ny rad så har vi gått ett steg till. 
+                isComment = false;
+                currentRow++;
+            }
+            else if(m.group().equals("FORW")) {
+                tokens.add(new Token(TokenType.FORW));
+                //currentToken++;
+            }
+            else if(m.group().equals("BACK")) {
+                tokens.add(new Token(TokenType.BACK));
+            }
+            else if(m.group().equals("LEFT")) {
+                tokens.add(new Token(TokenType.LEFT));
+            }
+            else if(m.group().equals("RIGHT")) {
+                tokens.add(new Token(TokenType.RIGHT));
+            }
+            else if(m.group().equals("DOWN")) {
+                tokens.add(new Token(TokenType.DOWN));
+            }
+            else if(m.group().equals("UP")) {
+                tokens.add(new Token(TokenType.UP));
+            }
+            else if(m.group().equals("COLOR")) {
+                tokens.add(new Token(TokenType.COLOR));
+            }
+            else if(m.group().contains("#")) {
+                tokens.add(new Token(TokenType.HEX));
+            }
+            else if(m.group().equals(".")) {
+                tokens.add(new Token(TokenType.PERIOD));
+            }
+            else if(m.group().equals("\"")) {
+                tokens.add(new Token(TokenType.QUOTE));
+            }
+            else if(m.group().matches("\\d+")) {
+                tokens.add(new Token(TokenType.DECIMAL));
+            }
+            else if(m.group().equals("%")) {
+                isComment = true;
+            }
+            
 
         }
         // Kolla om det fanns något kvar av indata som inte var ett token
@@ -50,6 +99,10 @@ public class Lexer {
         if (!hasMoreTokens())
             throw new SyntaxError();
         return tokens.get(currentToken);
+    }
+
+    public boolean isComment(String raw) {
+        if()
     }
 
     // Hämta nästa token i indata och gå framåt i indata
