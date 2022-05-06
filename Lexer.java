@@ -25,8 +25,15 @@ public class Lexer {
     }
 
     public Lexer(InputStream in) throws java.io.Exception {
-        String input = Lexer.readInput(in);
-        Pattern tokenPattern = Pattern.compile("FORW|BACK|LEFT|RIGHT|DOWN|UP|COLOR|REP|#[A-Fa-f0-9]{6}|\\.|\"|[1-9][0-9]*|%|\\s+");   //lägg till regex för de olika tokens vi ska använda, regex for comments --> %(?!.*\\n).*
+        String input = Lexer.readInput(in).toUpperCase();       // Gör om alla små bokstäver till stora
+        Pattern tokenPattern = Pattern.compile("(FORW\\s)|(BACK\\s)|(LEFT\\s)|(RIGHT\\s)|(DOWN)|(UP)|(COLOR\\s)|(REP\\s)|(#[A-Fa-f0-9]{6})|(\\.)|(\")|([1-9][0-9]*)|(%)|(\\s+)");   //lägg till regex för de olika tokens vi ska använda, regex for comments --> %(?!.*\\n).*
+        
+        /**
+        * Ändrade regex lite
+        * 1. Varje grej är inom parentes()
+        * 2. Läste i labbhäftet att man skulle ha 1 whitespace efter FORW, BACK, COLOR och dem
+         */
+        
         Matcher m = tokenPattern.matcher(input);
         int inputPos = 0;
         tokens = new ArrayList<Token>();
@@ -41,20 +48,29 @@ public class Lexer {
             }
 
             if(m.group().contains("\n")) {    //Om vi har en ny rad så har vi gått ett steg till. 
-                isComment = false;
-                currentRow++;
+                isComment = false;              // Ny rad ==> Avsluta kommentar
+                String tempGroup = m.group();   
+                for(char c : tempGroup) {       // Ifall matchningen har flera nyrader ska vi räkna alla
+                    if(c == '\n') {
+                        currentRow++;
+                    }
+                }
             }
-            else if(m.group().equals("FORW")) {
+            
+            if(isComment) {
+                continue;                       //Om vi är i en kommentar så ska vi inte lägga till tokens
+            }
+            else if(m.group().startsWith("FORW")) {     //.startsWith eftersom group kommer att innehålla en whitespace-karaktär ()
                 tokens.add(new Token(TokenType.FORW));
                 //currentToken++;
             }
-            else if(m.group().equals("BACK")) {
+            else if(m.group().startsWith("BACK")) {
                 tokens.add(new Token(TokenType.BACK));
             }
-            else if(m.group().equals("LEFT")) {
+            else if(m.group().startsWith("LEFT")) {
                 tokens.add(new Token(TokenType.LEFT));
             }
-            else if(m.group().equals("RIGHT")) {
+            else if(m.group().startsWith("RIGHT")) {
                 tokens.add(new Token(TokenType.RIGHT));
             }
             else if(m.group().equals("DOWN")) {
@@ -63,7 +79,7 @@ public class Lexer {
             else if(m.group().equals("UP")) {
                 tokens.add(new Token(TokenType.UP));
             }
-            else if(m.group().equals("COLOR")) {
+            else if(m.group().startsWith("COLOR")) {
                 tokens.add(new Token(TokenType.COLOR));
             }
             else if(m.group().contains("#")) {
@@ -86,8 +102,9 @@ public class Lexer {
         }
         // Kolla om det fanns något kvar av indata som inte var ett token
         if(inputPos != input.length()) {
-            tokens.add(new Token(TokenType.INVALID));
+            tokens.add(new Token(TokenType.INVALID, currentRow));
         }
+
         //token som signalerar slut på indata
         tokens.add(new Token(TokenType.EOF));
     }
