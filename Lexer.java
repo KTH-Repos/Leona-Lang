@@ -26,7 +26,7 @@ public class Lexer {
 
     public Lexer(InputStream in) throws java.io.Exception {
         String input = Lexer.readInput(in);
-        Pattern tokenPattern = Pattern.compile("");   //lägg till regex för de olika tokens vi ska använda
+        Pattern tokenPattern = Pattern.compile("FORW|BACK|LEFT|RIGHT|DOWN|UP|COLOR|REP|#[A-Fa-f0-9]{6}|\\.|\"|[1-9][0-9]*|%(?!.*\\n).*|\\s+");   //lägg till regex för de olika tokens vi ska använda
         Matcher m = tokenPattern.matcher(input);
         int inputPos = 0;
         tokens = new ArrayList<Token>();
