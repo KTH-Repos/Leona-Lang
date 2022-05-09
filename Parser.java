@@ -1,5 +1,6 @@
 public class Parser {
     private Lexer lexer;
+    private ParseTree parseTree;
 
     public ParseTree parse() throws SyntaxError{
         //start from leona expressions/instructions
@@ -7,10 +8,11 @@ public class Parser {
         Token t = lexer.nextToken();
     }
 
-    public ParseTree leonaExpr() throws SyntaxError {
+    public void leonaExpr() throws SyntaxError {
         Token t = lexer.nextToken();
         if(t.getType() == TokenType.FORW) {
-            if(lexer.nextToken().getType() != TokenType.DECIMAL) {
+            Token t1 = lexer.nextToken();
+            if(t1.getType() != TokenType.DECIMAL) {
                 throw new SyntaxError();
             }
             Token t2 = lexer.nextToken();
@@ -18,6 +20,7 @@ public class Parser {
                 throw new SyntaxError();
             }
             //lägg till instruktionen till nån datastruktur med andra giltiga instruktioner. 
+            parseTree.add(new MovementNode((Integer)t1.getData()));
         }
         else if(t.getType() == TokenType.BACK) {
             if(lexer.nextToken().getType() != TokenType.DECIMAL) {
@@ -86,7 +89,7 @@ public class Parser {
         }
     }
 
-    public ParseTree repExpr() throws SyntaxError {
+    public void repExpr() throws SyntaxError {
         Token t = lexer.peekToken();
         if(t.getType() == TokenType.QUOTE) {
             //return an empty parsetree.
