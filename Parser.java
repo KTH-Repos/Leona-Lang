@@ -66,6 +66,34 @@ public class Parser {
             if(lexer.nextToken().getType() != TokenType.HEX) {
                 throw new SyntaxError();
             }
+            Token t2 = lexer.nextToken();
+            if(t2.getType() != TokenType.PERIOD) {
+                throw new SyntaxError();
+            }
+            //lägg till instruktionen till nån datastruktur med andra giltiga instruktioner. 
+        }
+        else if(t.getType() == TokenType.REP) {
+            if(lexer.nextToken().getType() != TokenType.DECIMAL) {
+                throw new SyntaxError();
+            }
+            Token t2 = lexer.nextToken();
+            if(t2.getType() == TokenType.QUOTE) {
+                repExpr();
+            }
+            else {
+                leonaExpr();
+            }
+        }
+    }
+
+    public ParseTree repExpr() throws SyntaxError {
+        Token t = lexer.peekToken();
+        if(t.getType() == TokenType.QUOTE) {
+            //return an empty parsetree.
+        }
+        else {
+            while(lexer.peekToken().getType() != TokenType.QUOTE)
+            leonaExpr();
         }
     }
 }
