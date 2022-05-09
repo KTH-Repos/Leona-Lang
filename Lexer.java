@@ -57,45 +57,67 @@ public class Lexer {
                 }
             }
             
-            if(isComment) {
+            if(isComment) {       
                 continue;                       //Om vi är i en kommentar så ska vi inte lägga till tokens
             }
             else if(m.group().startsWith("FORW")) {     //.startsWith eftersom group kommer att innehålla en whitespace-karaktär ()
                 tokens.add(new Token(TokenType.FORW));
-                //currentToken++;
+                currentToken++;
             }
             else if(m.group().startsWith("BACK")) {
                 tokens.add(new Token(TokenType.BACK));
+                currentToken++;
+
             }
             else if(m.group().startsWith("LEFT")) {
                 tokens.add(new Token(TokenType.LEFT));
+                currentToken++;
+
             }
             else if(m.group().startsWith("RIGHT")) {
                 tokens.add(new Token(TokenType.RIGHT));
+                currentToken++;
+
             }
             else if(m.group().equals("DOWN")) {
                 tokens.add(new Token(TokenType.DOWN));
+                currentToken++;
+
             }
             else if(m.group().equals("UP")) {
                 tokens.add(new Token(TokenType.UP));
+                currentToken++;
+
             }
             else if(m.group().startsWith("COLOR")) {
                 tokens.add(new Token(TokenType.COLOR));
+                currentToken++;
+
             }
             else if(m.group().contains("#")) {
                 tokens.add(new Token(TokenType.HEX));
+                currentToken++;
+
             }
             else if(m.group().equals(".")) {
                 tokens.add(new Token(TokenType.PERIOD));
+                currentToken++;
+
             }
             else if(m.group().equals("\"")) {
                 tokens.add(new Token(TokenType.QUOTE));
+                currentToken++;
+
             }
             else if(m.group().matches("\\d+")) {
                 tokens.add(new Token(TokenType.DECIMAL));
+                currentToken++;
+
             }
             else if(m.group().equals("%")) {
                 isComment = true;
+                currentToken++;        
+
             }
             
 
@@ -116,10 +138,6 @@ public class Lexer {
         if (!hasMoreTokens())
             throw new SyntaxError();
         return tokens.get(currentToken);
-    }
-
-    public boolean isComment(String raw) {
-        if()
     }
 
     // Hämta nästa token i indata och gå framåt i indata
