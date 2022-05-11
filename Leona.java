@@ -15,6 +15,33 @@ public class Leona {
         penUp = true;
     }
 
+    public void penUp() {
+        this.penUp = true;
+    }
+
+    public void penDown() {
+        this.penUp = false;
+    }
+
+    public void turnRight(int degree) {
+        angle = angle - degree;
+    }
+
+    public void turnLeft(int degree) {
+        angle = angle + degree;
+    }
+
+    public void moveForw(int d) {
+        move(d);        //no check is done if d is negative or not
+    }
+
+    public void moveBack(int d) {
+        move(d*(-1));   //no check is done if d is negative or not
+    }
+
+    public void changeColor(String color) {
+        penColor = color;
+    }
     
     public void move(int d) {
         xCord = xCord + d * Math.cos(Math.PI*angle/180);

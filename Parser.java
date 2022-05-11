@@ -4,7 +4,9 @@ public class Parser {
 
     public ParseTree parse() throws SyntaxError{
         //start from leona expressions/instructions
-        ParseTree pt = leonaExpr();
+        //ParseTree pt = leonaExpr();
+        parseTree = new ParseTree();
+        
         Token t = lexer.nextToken();
     }
 
