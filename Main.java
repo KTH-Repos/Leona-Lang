@@ -8,6 +8,6 @@ public class Main {
         ParseTree parseTree = parser.parse();
         System.out.println("Evaluating");
         parseTree.evaluate();
-        System.out.println("Finished");
+        System.out.println("Finished"); 
     }
 }

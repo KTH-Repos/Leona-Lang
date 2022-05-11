@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class Lexer {
     private String input;
-    public List<Token> tokens;
+    public ArrayList<Token> tokens;
     private int currentToken;
 
     // Hjälpmetod som läser in innehållet i en inputstream till en
@@ -62,7 +62,7 @@ public class Lexer {
             }
             else if(m.group().startsWith("FORW")) {     //.startsWith eftersom group kommer att innehålla en whitespace-karaktär ()
                 tokens.add(new Token(TokenType.FORW));
-                currentToken++;
+                //currentToken++;
             }
             else if(m.group().startsWith("BACK")) {
                 tokens.add(new Token(TokenType.BACK));
@@ -71,57 +71,57 @@ public class Lexer {
             }
             else if(m.group().startsWith("LEFT")) {
                 tokens.add(new Token(TokenType.LEFT));
-                currentToken++;
+                //currentToken++;
 
             }
             else if(m.group().startsWith("RIGHT")) {
                 tokens.add(new Token(TokenType.RIGHT));
-                currentToken++;
+                //currentToken++;
 
             }
             else if(m.group().equals("DOWN")) {
                 tokens.add(new Token(TokenType.DOWN));
-                currentToken++;
+                //currentToken++;
 
             }
             else if(m.group().equals("UP")) {
                 tokens.add(new Token(TokenType.UP));
-                currentToken++;
+                //currentToken++;
 
             }
             else if(m.group().startsWith("COLOR")) {
                 tokens.add(new Token(TokenType.COLOR));
-                currentToken++;
+                //currentToken++;
 
             }
             else if(m.group().contains("#")) {
                 int hashtagIndex = m.group().indexOf("#");
                 tokens.add(new Token(TokenType.HEX, m.group().substring(hashtagIndex, hashtagIndex+7)));
-                currentToken++;
+                //currentToken++;
 
             }
             else if(m.group().equals(".")) {
                 tokens.add(new Token(TokenType.PERIOD));
-                currentToken++;
+                //currentToken++;
 
             }
             else if(m.group().equals("\"")) {
                 tokens.add(new Token(TokenType.QUOTE));
-                currentToken++;
+                //currentToken++;
 
             }
             else if(m.group().matches("\\d+")) {
                 tokens.add(new Token(TokenType.DECIMAL, Integer.valueOf(m.group())));
-                currentToken++;
+                //currentToken++;
 
             }
             else if(m.group().equals("%")) {
                 isComment = true;
-                currentToken++;        
+                //currentToken++;        
 
             }
             
-
+            inputPos = m.end();
         }
         // Kolla om det fanns något kvar av indata som inte var ett token
         if(inputPos != input.length()) {
@@ -130,6 +130,10 @@ public class Lexer {
 
         //token som signalerar slut på indata
         tokens.add(new Token(TokenType.EOF));
+
+        for(int i = 0; i < tokens.size(); i++){
+            System.out.println(tokens.get(i).getType());
+        }
     }
 
 

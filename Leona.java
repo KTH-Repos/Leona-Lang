@@ -44,8 +44,13 @@ public class Leona {
     }
     
     public void move(int d) {
+        double xCordOld = xCord;
+        double yCordOld = yCord;
         xCord = xCord + d * Math.cos(Math.PI*angle/180);
         yCord = yCord + d * Math.sin(Math.PI*angle/180);
+        if(!penUp) {
+            System.out.println("Move from" + "(" +xCordOld + "," + yCordOld + ")" + "to" + "(" +xCord + "," + yCord + ")");
+        }
     }
 
     

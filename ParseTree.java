@@ -14,6 +14,9 @@ public class ParseTree{
 
     public void evaluate() {
         Leona leona = new Leona();
+        /* for(int i = 0; i < instructions.size(); i++){
+            System.out.println(i);
+        }  */
         for(AbstractInstruction instruction : instructions) {
             instruction.evaluate(leona);
         }

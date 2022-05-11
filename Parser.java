@@ -13,8 +13,14 @@ public class Parser {
         //parseTree = new ParseTree();
 
         ParseTree newParseTree = new ParseTree();
-        while(lexer.hasMoreTokens()) {
-            newParseTree.add(leonaExpr());
+        while(true) {
+            if(lexer.peekToken().getType() != TokenType.EOF) {
+                newParseTree.add(leonaExpr());
+                System.out.println("new instruction added");
+            }
+            else {
+                break;
+            }
         }
         return newParseTree;
     }
@@ -49,6 +55,7 @@ public class Parser {
         else if(t.getType() == TokenType.LEFT) {
             Token t1 = lexer.nextToken();
             if(t1.getType() != TokenType.DECIMAL) {
+                System.out.println(t1.getType());
                 throw new SyntaxError();
             }
             Token t2 = lexer.nextToken();
