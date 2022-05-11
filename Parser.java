@@ -3,6 +3,9 @@ import java.util.ArrayList;
 public class Parser {
     private Lexer lexer;
     //private ParseTree parseTree;
+    public Parser(Lexer lexer) {
+        this.lexer = lexer;
+    }
 
     public ParseTree parse() throws SyntaxError{
         //start from leona expressions/instructions
@@ -110,20 +113,20 @@ public class Parser {
                 instructions.add(leonaExpr());
                 return new RepeatNode((Integer)t1.getData(), instructions);
             }
+        } else {
+            throw new SyntaxError();
         }
     }
 
     public ArrayList<AbstractInstruction> repExpr() throws SyntaxError {
         ArrayList<AbstractInstruction> instructions = new ArrayList<>();
         Token t = lexer.peekToken();
-        if(t.getType() == TokenType.QUOTE) {
-            //return an empty parsetree.
-            return instructions;
-        }
-        else {
+        if(t.getType() != TokenType.QUOTE) {
             while(lexer.peekToken().getType() != TokenType.QUOTE) {
                 instructions.add(leonaExpr());
             }
         }
+
+        return instructions;
     }
 }

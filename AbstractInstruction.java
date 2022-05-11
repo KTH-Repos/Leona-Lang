@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 abstract class AbstractInstruction {
 
     abstract public void evaluate(Leona leona);

@@ -24,7 +24,7 @@ public class Lexer {
         return buf.toString();
     }
 
-    public Lexer(InputStream in) throws java.io.Exception {
+    public Lexer(InputStream in) throws Exception {
         String input = Lexer.readInput(in).toUpperCase();       // Gör om alla små bokstäver till stora
         Pattern tokenPattern = Pattern.compile("(FORW\\s)|(BACK\\s)|(LEFT\\s)|(RIGHT\\s)|(DOWN)|(UP)|(COLOR\\s)|(REP\\s)|(#[A-Fa-f0-9]{6})|(\\.)|(\")|([1-9][0-9]*)|(%)|(\\s+)");   //lägg till regex för de olika tokens vi ska använda, regex for comments --> %(?!.*\\n).*
         
@@ -37,7 +37,7 @@ public class Lexer {
         Matcher m = tokenPattern.matcher(input);
         int inputPos = 0;
         tokens = new ArrayList<Token>();
-        boolean isComment;     //false by default
+        boolean isComment = false;     //false by default
         currentToken = 0;
         int currentRow = 1;     //Kolla vilken rad kommandon ligger på
         // Hitta förekomster av tokens/whitespace i indata
@@ -50,8 +50,8 @@ public class Lexer {
             if(m.group().contains("\n")) {    //Om vi har en ny rad så har vi gått ett steg till. 
                 isComment = false;              // Ny rad ==> Avsluta kommentar
                 String tempGroup = m.group();   
-                for(char c : tempGroup) {       // Ifall matchningen har flera nyrader ska vi räkna alla
-                    if(c == '\n') {
+                for(int i = 0; i < tempGroup.length(); i++) {       // Ifall matchningen har flera nyrader ska vi räkna alla
+                    if(tempGroup.charAt(i) == '\n') {
                         currentRow++;
                     }
                 }
@@ -95,7 +95,8 @@ public class Lexer {
 
             }
             else if(m.group().contains("#")) {
-                tokens.add(new Token(TokenType.HEX));
+                int hashtagIndex = m.group().indexOf("#");
+                tokens.add(new Token(TokenType.HEX, m.group().substring(hashtagIndex, hashtagIndex+7)));
                 currentToken++;
 
             }
@@ -110,7 +111,7 @@ public class Lexer {
 
             }
             else if(m.group().matches("\\d+")) {
-                tokens.add(new Token(TokenType.DECIMAL));
+                tokens.add(new Token(TokenType.DECIMAL, Integer.valueOf(m.group())));
                 currentToken++;
 
             }

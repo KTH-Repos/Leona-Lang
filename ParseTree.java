@@ -11,4 +11,11 @@ public class ParseTree{
     public void add(AbstractInstruction ins) {
         instructions.add(ins);
     }
+
+    public void evaluate() {
+        Leona leona = new Leona();
+        for(AbstractInstruction instruction : instructions) {
+            instruction.evaluate(leona);
+        }
+    }
 }
