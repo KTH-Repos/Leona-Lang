@@ -27,6 +27,7 @@ public class Parser {
 
     public AbstractInstruction leonaExpr() throws Error, Exception {
         Token t = lexer.nextToken();
+        //System.err.println("Tokentype " + t.getType());
         if(t.getType() == TokenType.FORW) {
             Token t1 = lexer.nextToken();
             if(t1.getType() != TokenType.DECIMAL) {
@@ -109,8 +110,9 @@ public class Parser {
             if(t1.getType() != TokenType.DECIMAL) {
                 throw new SyntaxError(t1.getRaw());
             }
-            Token t2 = lexer.nextToken();
+            Token t2 = lexer.peekToken();
             if(t2.getType() == TokenType.QUOTE) {
+                lexer.nextToken();
                 // We need an ArrayList<AbstractInstruction>
                 ArrayList<AbstractInstruction> instructions = repExpr();
                 return new RepeatNode((Integer)t1.getData(), instructions);
@@ -122,6 +124,7 @@ public class Parser {
                 return new RepeatNode((Integer)t1.getData(), instructions);
             }
         } else {
+            //System.err.println("Unknown token:" + t.getType());
             throw new SyntaxError(t.getRaw());
         }
     }
@@ -134,7 +137,7 @@ public class Parser {
                 instructions.add(leonaExpr());
             }
         }
-
+        lexer.nextToken();
         return instructions;
     }
 }

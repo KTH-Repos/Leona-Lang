@@ -66,7 +66,7 @@ public class Lexer {
             }
             else if(m.group().startsWith("BACK")) {
                 tokens.add(new Token(TokenType.BACK, currentRow));
-                currentToken++;
+                //currentToken++;
 
             }
             else if(m.group().startsWith("LEFT")) {
@@ -91,6 +91,11 @@ public class Lexer {
             }
             else if(m.group().startsWith("COLOR")) {
                 tokens.add(new Token(TokenType.COLOR, currentRow));
+                //currentToken++;
+
+            }
+            else if(m.group().startsWith("REP")) {
+                tokens.add(new Token(TokenType.REP, currentRow));
                 //currentToken++;
 
             }
@@ -142,7 +147,7 @@ public class Lexer {
         tokens.add(new Token(TokenType.EOF, currentRow));
 
         /*for(int i = 0; i < tokens.size(); i++){
-            System.err.println(tokens.get(i).getType());
+            System.err.println(tokens.get(i).getType() + "   " + tokens.get(i).getRaw());
         }*/
     }
 
