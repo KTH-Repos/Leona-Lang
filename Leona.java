@@ -54,7 +54,16 @@ public class Leona {
         yCord = yCord + d * Math.sin(Math.PI*angle/180);
         if(!penUp) {
             //System.err.println("Move from" + "(" + df.format(xCordOld) + "," + df.format(yCordOld) + ") to (" + df.format(xCord) + "," + df.format(yCord) + ")");
-            System.out.println(this.penColor + " " + df.format(xCordOld) + " " + df.format(yCordOld) + " " + df.format(xCord) + " " + df.format(yCord));
+            System.out.println(this.penColor + " " + formatDouble(xCordOld) + " " + formatDouble(yCordOld) + " " + formatDouble(xCord) + " " + formatDouble(yCord));
+        }
+    }
+
+    private String formatDouble(double d) {
+        String s = df.format(d);
+        if(s.equals("-0.0000")) {
+            return "0.0000";
+        } else {
+            return s;
         }
     }
 
