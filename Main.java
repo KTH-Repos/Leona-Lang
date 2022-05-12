@@ -1,13 +1,13 @@
 public class Main {
     public static void main(String[] args) throws Exception{
-        System.out.println("Starting Lexer");
+        //System.err.println("Starting Lexer");
         Lexer lexer = new Lexer(System.in);
-        System.out.println("Starting Parser");
+        //System.err.println("Starting Parser");
         Parser parser = new Parser(lexer);
-        System.out.println("Parsing");
+        //System.err.println("Parsing");
         ParseTree parseTree = parser.parse();
-        System.out.println("Evaluating");
+        //System.err.println("Evaluating");
         parseTree.evaluate();
-        System.out.println("Finished"); 
+        //System.err.println("Finished"); 
     }
 }

@@ -131,9 +131,9 @@ public class Lexer {
         //token som signalerar slut på indata
         tokens.add(new Token(TokenType.EOF));
 
-        for(int i = 0; i < tokens.size(); i++){
-            System.out.println(tokens.get(i).getType());
-        }
+        /*for(int i = 0; i < tokens.size(); i++){
+            System.err.println(tokens.get(i).getType());
+        }*/
     }
 
 

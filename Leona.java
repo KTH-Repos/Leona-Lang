@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+
 public class Leona {
 
     private double xCord;
@@ -5,6 +7,8 @@ public class Leona {
     private int angle;
     private String penColor;
     private boolean penUp;   //false = down, true = up
+
+    private static final DecimalFormat df = new DecimalFormat("0.0000");
 
     //(x + d cos(pi*v=180); y + d sin(pi*v=180))
     public Leona() {
@@ -49,7 +53,8 @@ public class Leona {
         xCord = xCord + d * Math.cos(Math.PI*angle/180);
         yCord = yCord + d * Math.sin(Math.PI*angle/180);
         if(!penUp) {
-            System.out.println("Move from" + "(" +xCordOld + "," + yCordOld + ")" + "to" + "(" +xCord + "," + yCord + ")");
+            //System.err.println("Move from" + "(" + df.format(xCordOld) + "," + df.format(yCordOld) + ") to (" + df.format(xCord) + "," + df.format(yCord) + ")");
+            System.out.println(this.penColor + " " + df.format(xCordOld) + " " + df.format(yCordOld) + " " + df.format(xCord) + " " + df.format(yCord));
         }
     }
 
