@@ -12,15 +12,19 @@ enum TokenType {
 class Token {
     private TokenType type;
     private Object data;
+    private int raw;
 
-    public Token(TokenType type) {
+
+    public Token(TokenType type, int raw) {
         this.type = type;
         this.data = null;
+        this.raw = raw;
     }
 
-    public Token(TokenType type, Object data) {
+    public Token(TokenType type, Object data, int raw) {
         this.type = type;
         this.data = data;
+        this.raw = raw;
     }
 
     public String toString() {
@@ -36,5 +40,9 @@ class Token {
 
     public Object getData() {
         return data;
+    }
+
+    public int getRaw() {
+        return raw;
     }
 }

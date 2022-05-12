@@ -46,72 +46,72 @@ public class Lexer {
             if (m.start() != inputPos && (isComment == false)) {
                 tokens.add(new Token(TokenType.INVALID, currentRow));
             }
-
-            if(m.group().contains("\n")) {    //Om vi har en ny rad så har vi gått ett steg till. 
-                isComment = false;              // Ny rad ==> Avsluta kommentar
-                String tempGroup = m.group();   
-                for(int i = 0; i < tempGroup.length(); i++) {       // Ifall matchningen har flera nyrader ska vi räkna alla
-                    if(tempGroup.charAt(i) == '\n') {
-                        currentRow++;
-                    }
-                }
-            }
             
-            if(isComment) {       
-                continue;                       //Om vi är i en kommentar så ska vi inte lägga till tokens
+            if(isComment) { 
+                if(m.group().contains("\n")) {    //Om vi har en ny rad så har vi gått ett steg till. 
+                    isComment = false;              // Ny rad ==> Avsluta kommentar
+                    String tempGroup = m.group();   
+                    /* for(int i = 0; i < tempGroup.length(); i++) {       // Ifall matchningen har flera nyrader ska vi räkna alla
+                        if(tempGroup.charAt(i) == '\n') {
+                            currentRow++;
+                        }
+                    } */
+                }    
+                
+                //continue;                       //Om vi är i en kommentar så ska vi inte lägga till tokens
             }
             else if(m.group().startsWith("FORW")) {     //.startsWith eftersom group kommer att innehålla en whitespace-karaktär ()
-                tokens.add(new Token(TokenType.FORW));
+                tokens.add(new Token(TokenType.FORW, currentRow));
                 //currentToken++;
             }
             else if(m.group().startsWith("BACK")) {
-                tokens.add(new Token(TokenType.BACK));
+                tokens.add(new Token(TokenType.BACK, currentRow));
                 currentToken++;
 
             }
             else if(m.group().startsWith("LEFT")) {
-                tokens.add(new Token(TokenType.LEFT));
+                tokens.add(new Token(TokenType.LEFT, currentRow));
                 //currentToken++;
 
             }
             else if(m.group().startsWith("RIGHT")) {
-                tokens.add(new Token(TokenType.RIGHT));
+                tokens.add(new Token(TokenType.RIGHT, currentRow));
                 //currentToken++;
 
             }
             else if(m.group().equals("DOWN")) {
-                tokens.add(new Token(TokenType.DOWN));
+                tokens.add(new Token(TokenType.DOWN, currentRow));
                 //currentToken++;
 
             }
             else if(m.group().equals("UP")) {
-                tokens.add(new Token(TokenType.UP));
+                tokens.add(new Token(TokenType.UP, currentRow));
                 //currentToken++;
 
             }
             else if(m.group().startsWith("COLOR")) {
-                tokens.add(new Token(TokenType.COLOR));
+                tokens.add(new Token(TokenType.COLOR, currentRow));
                 //currentToken++;
 
             }
             else if(m.group().contains("#")) {
                 int hashtagIndex = m.group().indexOf("#");
-                tokens.add(new Token(TokenType.HEX, m.group().substring(hashtagIndex, hashtagIndex+7)));
+                tokens.add(new Token(TokenType.HEX, m.group().substring(hashtagIndex, hashtagIndex+7), currentRow));
                 //currentToken++;
 
             }
             else if(m.group().equals(".")) {
-                tokens.add(new Token(TokenType.PERIOD));
+                tokens.add(new Token(TokenType.PERIOD, currentRow));
                 //currentToken++;
 
             }
             else if(m.group().equals("\"")) {
-                tokens.add(new Token(TokenType.QUOTE));
+                tokens.add(new Token(TokenType.QUOTE, currentRow));
                 //currentToken++;
 
             }
             else if(m.group().matches("\\d+")) {
-                tokens.add(new Token(TokenType.DECIMAL, Integer.valueOf(m.group())));
+                tokens.add(new Token(TokenType.DECIMAL, Integer.valueOf(m.group()), currentRow));
                 //currentToken++;
 
             }
@@ -122,14 +122,24 @@ public class Lexer {
             }
             
             inputPos = m.end();
+            if(m.group().contains("\n")) {    //Om vi har en ny rad så har vi gått ett steg till. 
+                isComment = false;              // Ny rad ==> Avsluta kommentar
+                String tempGroup = m.group();   
+                for(int i = 0; i < tempGroup.length(); i++) {       // Ifall matchningen har flera nyrader ska vi räkna alla
+                    if(tempGroup.charAt(i) == '\n') {
+                        currentRow++;
+                    }
+                }
+            }      
         }
         // Kolla om det fanns något kvar av indata som inte var ett token
         if(inputPos != input.length()) {
             tokens.add(new Token(TokenType.INVALID, currentRow));
         }
 
+
         //token som signalerar slut på indata
-        tokens.add(new Token(TokenType.EOF));
+        tokens.add(new Token(TokenType.EOF, currentRow));
 
         /*for(int i = 0; i < tokens.size(); i++){
             System.err.println(tokens.get(i).getType());
@@ -138,15 +148,15 @@ public class Lexer {
 
 
     // Kika på nästa token i indata, utan att gå vidare
-    public Token peekToken() throws SyntaxError {
+    public Token peekToken() throws Error, Exception {
         // Slut på indataströmmen
         if (!hasMoreTokens())
-            throw new SyntaxError();
+            throw new Exception();
         return tokens.get(currentToken);
     }
 
     // Hämta nästa token i indata och gå framåt i indata
-    public Token nextToken() throws SyntaxError {
+    public Token nextToken() throws Error, Exception {
         Token res = peekToken();
         ++currentToken;
         return res;

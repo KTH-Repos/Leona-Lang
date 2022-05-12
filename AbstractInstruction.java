@@ -15,11 +15,7 @@ class MovementNode extends AbstractInstruction {
     }
 
     public void evaluate(Leona leona) {
-        if(moveUnits < 0) {
-            leona.moveBack(-moveUnits);
-        } else {
-            leona.moveForw(moveUnits);
-        }
+        leona.move(moveUnits);
     }
     
 }
