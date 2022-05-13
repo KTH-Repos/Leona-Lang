@@ -1,6 +1,9 @@
 import java.text.DecimalFormat;
 
+/* Skriven av Tomas & Melvin */
+
 public class Leona {
+    // Simulerar sköldpaddan Leona
 
     private double xCord;
     private double yCord;
@@ -8,7 +11,7 @@ public class Leona {
     private String penColor;
     private boolean penUp;   //false = down, true = up
 
-    private static final DecimalFormat df = new DecimalFormat("0.0000");
+    private static final DecimalFormat df = new DecimalFormat("0.0000"); // Printa bara 4 decimaler
 
     //(x + d cos(pi*v=180); y + d sin(pi*v=180))
     public Leona() {
@@ -48,17 +51,23 @@ public class Leona {
     }
     
     public void move(int d) {
+        // Ska bara printas när Leona rör sig framåt / bakåt och pennan är i ned-läge (penUp = false)
+
+        // Uppdatera koordinater enligt formel från labbhäftet
         double xCordOld = xCord;
         double yCordOld = yCord;
         xCord = xCord + d * Math.cos(Math.PI*angle/180);
         yCord = yCord + d * Math.sin(Math.PI*angle/180);
+
         if(!penUp) {
-            //System.err.println("Move from" + "(" + df.format(xCordOld) + "," + df.format(yCordOld) + ") to (" + df.format(xCord) + "," + df.format(yCord) + ")");
+            //Skriv ut förflyttning
             System.out.println(this.penColor + " " + formatDouble(xCordOld) + " " + formatDouble(yCordOld) + " " + formatDouble(xCord) + " " + formatDouble(yCord));
         }
     }
 
     private String formatDouble(double d) {
+        // Hjälparmetod för att skriva ut 4 decimaler
+        // Löser även bugg med -0.0000
         String s = df.format(d);
         if(s.equals("-0.0000")) {
             return "0.0000";

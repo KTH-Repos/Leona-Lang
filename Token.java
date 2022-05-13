@@ -1,3 +1,5 @@
+/* Skriven av Tomas & Melvin */
+
 // De olika token-typer vi har i grammatiken
 enum TokenType {
     FORW, BACK, LEFT, RIGHT, DOWN, UP, COLOR, REP, PERIOD, QUOTE, DECIMAL, HEX, EOF, INVALID
@@ -12,7 +14,7 @@ enum TokenType {
 class Token {
     private TokenType type;
     private Object data;
-    private int raw;
+    private int raw; // Radnummer av token
 
 
     public Token(TokenType type, int raw) {

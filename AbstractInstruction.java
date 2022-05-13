@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+/* Skriven av Tomas och Melvin */
+
 abstract class AbstractInstruction {
 
     abstract public void evaluate(Leona leona);
@@ -7,20 +9,23 @@ abstract class AbstractInstruction {
 }
 
 class MovementNode extends AbstractInstruction {
+    // Forw eller Back-instruktioner får läggas i en movement node
 
-    private int moveUnits;
+    private int moveUnits; // Hur många steg framåt
 
     public MovementNode(int d) {
         moveUnits = d;
     }
 
     public void evaluate(Leona leona) {
+        // Gå framåt
         leona.move(moveUnits);
     }
     
 }
 
 class RotationNode extends AbstractInstruction {
+    // Left eller Right-instruktioner får läggas i en rotation node
 
     private int rotationUnits;
 
@@ -39,6 +44,7 @@ class RotationNode extends AbstractInstruction {
 }
 
 class PenNode extends AbstractInstruction {
+    // Up, Down, Color
 
     private boolean changeColor; // True ==> COLOR, False ==> UP or DOWN
     private String newColor;
@@ -57,8 +63,10 @@ class PenNode extends AbstractInstruction {
 
     public void evaluate(Leona leona) {
         if(this.changeColor) {
+            // Color
             leona.changeColor(this.newColor);
         } else {
+            // Up or Down
             if(this.newPenUp) {
                 leona.penUp();
             } else {
@@ -71,8 +79,9 @@ class PenNode extends AbstractInstruction {
 }
 
 class RepeatNode extends AbstractInstruction {
-    private int numReps;
-    private ArrayList<AbstractInstruction> instructions;
+    // Rep-instruktioner
+    private int numReps; // Hur många gånger det ska repeteras
+    private ArrayList<AbstractInstruction> instructions; // Instruktioner som körs 1 gång per repetition
 
     public RepeatNode(int numReps, ArrayList<AbstractInstruction> instructions) {
         this.numReps = numReps;
@@ -80,7 +89,10 @@ class RepeatNode extends AbstractInstruction {
     }
 
     public void evaluate(Leona leona) {
+
+        // Kör 1 gång per rep
         for(int i = 0; i < numReps; i++) {
+            // Kör alla instruktioner i ordning
             for(AbstractInstruction instruction : instructions) {
                 instruction.evaluate(leona);
             }

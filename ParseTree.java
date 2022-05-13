@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 
+/* Skriven av Tomas & Melvin */
+
 public class ParseTree{
 
-    private ArrayList<AbstractInstruction> instructions;
+    private ArrayList<AbstractInstruction> instructions; // Lista av instruktioner
 
     public ParseTree() {
         instructions = new ArrayList<>();
