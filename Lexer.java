@@ -33,7 +33,7 @@ public class Lexer {
 
     public Lexer(InputStream in) throws Exception {
         String input = Lexer.readInput(in).toUpperCase();       // Gör om alla små bokstäver till stora
-        Pattern tokenPattern = Pattern.compile("(FORW\\s)|(BACK\\s)|(LEFT\\s)|(RIGHT\\s)|(DOWN)|(UP)|(COLOR\\s)|(REP\\s)|(#[A-Fa-f0-9]{6})|(\\.)|(\")|([1-9][0-9]*)|(%)|(\\s+)");   //lägg till regex för de olika tokens vi ska använda, regex for comments --> %(?!.*\\n).*
+        Pattern tokenPattern = Pattern.compile("(FORW\\s)|(BACK\\s)|(LEFT\\s)|(RIGHT\\s)|(DOWN)|(UP)|(COLOR\\s)|(REP(\\s)*)|(#[A-Fa-f0-9]{6})|(\\.)|(\")|([1-9][0-9]*)|(%.*)|(\\s+)");   //lägg till regex för de olika tokens vi ska använda, regex for comments --> %(?!.*\\n).*
         
         /**
         * Matchar varje individuell token + Kommentarer + Whitespace
@@ -85,7 +85,7 @@ public class Lexer {
                 tokens.add(new Token(TokenType.REP, currentRow));
             }
 
-            else if(m.group().contains("#")) {
+            else if(m.group().startsWith("#")) {
                 int hashtagIndex = m.group().indexOf("#");
                 // Om matchen har en # är det hex, token:s data ska vara en sträng på formatet "#hhhhhh" där h = [0-9a-f].
                 tokens.add(new Token(TokenType.HEX, m.group().substring(hashtagIndex, hashtagIndex+7), currentRow));
@@ -102,16 +102,17 @@ public class Lexer {
             else if(m.group().matches("\\d+")) {
                 // Decimal
 
-                if(!input.substring(m.end(), m.end()+1).matches("(\\s)|(\\.)")) {
+                if(!input.substring(m.end(), m.end()+1).matches("(\\s)|(\\.)|(%)")) {
                     // Tal får endast följas av punkt eller whitespace
                     // Annars invalid
                     tokens.add(new Token(TokenType.INVALID, currentRow));
+
                 } else {
                     // Följs av punkt eller whitespace, valid
                     tokens.add(new Token(TokenType.DECIMAL, Integer.valueOf(m.group()), currentRow));
-                }
+                } 
             }
-            else if(m.group().equals("%")) {
+            else if(m.group().startsWith("%")) {
                 // Kommentar
                 isComment = true;
             }
@@ -138,9 +139,9 @@ public class Lexer {
         //token som signalerar slut på indata
         tokens.add(new Token(TokenType.EOF, currentRow));
 
-        /*for(int i = 0; i < tokens.size(); i++){
+        for(int i = 0; i < tokens.size(); i++){
             System.err.println(tokens.get(i).getType() + "   " + tokens.get(i).getRaw());
-        }*/
+        }
     }
 
 
