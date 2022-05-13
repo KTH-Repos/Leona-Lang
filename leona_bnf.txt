@@ -1,0 +1,9 @@
+<LeonaProgram> ::= EOF | <LeonaInstruction> <LeonaProgram>
+<RepProgram> ::= QUOTE | <LeonaInstruction> <RepProgram>
+
+<LeonaInstruction> ::= 
+	FORW Decimal Period | BACK Decimal Period |
+ 	LEFT Decimal Period | RIGHT Decimal Period |
+	UP Period | DOWN Period | 
+	COLOR Hex Period | 
+	REP Decimal QUOTE <RepProgram> | REP Num <LeonaInstruction>
