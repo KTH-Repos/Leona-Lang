@@ -110,9 +110,13 @@ public class Lexer {
                 //currentToken++;
 
             }
-            else if(m.group().equals("\"")) {
-                tokens.add(new Token(TokenType.QUOTE, currentRow));
-                //currentToken++;
+            else if(m.group().contains("\"")) {
+                if(!input.substring(m.start()-1, m.start()).matches("(\\s)|(\\.)")) {
+                    tokens.add(new Token(TokenType.INVALID, currentRow));
+                } else {
+                    tokens.add(new Token(TokenType.QUOTE, currentRow));
+                    //currentToken++;
+                }
 
             }
             else if(m.group().matches("\\d+")) {
