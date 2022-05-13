@@ -111,18 +111,17 @@ public class Lexer {
 
             }
             else if(m.group().contains("\"")) {
-                if(!input.substring(m.start()-1, m.start()).matches("(\\s)|(\\.)")) {
-                    tokens.add(new Token(TokenType.INVALID, currentRow));
-                } else {
-                    tokens.add(new Token(TokenType.QUOTE, currentRow));
-                    //currentToken++;
-                }
+                tokens.add(new Token(TokenType.QUOTE, currentRow));
+                //currentToken++;
 
             }
             else if(m.group().matches("\\d+")) {
-                tokens.add(new Token(TokenType.DECIMAL, Integer.valueOf(m.group()), currentRow));
-                //currentToken++;
-
+                if(!input.substring(m.end(), m.end()+1).matches("(\\s)|(\\.)")) {
+                    tokens.add(new Token(TokenType.INVALID, currentRow));
+                } else {
+                    tokens.add(new Token(TokenType.DECIMAL, Integer.valueOf(m.group()), currentRow));
+                    //currentToken++;
+                }
             }
             else if(m.group().equals("%")) {
                 isComment = true;
