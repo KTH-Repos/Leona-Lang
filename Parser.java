@@ -159,6 +159,8 @@ public class Parser {
             while(lexer.peekToken().getType() != TokenType.QUOTE) {
                 instructions.add(leonaExpr());
             }
+        } else {
+            throw new SyntaxError(t.getRaw());
         }
         // Vi har nått den avslutande quoten
         lexer.nextToken();

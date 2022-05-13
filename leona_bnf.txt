@@ -6,4 +6,4 @@
  	LEFT Decimal Period | RIGHT Decimal Period |
 	UP Period | DOWN Period | 
 	COLOR Hex Period | 
-	REP Decimal QUOTE <RepProgram> | REP Num <LeonaInstruction>
+	REP Decimal QUOTE <LeonaInstruction> <RepProgram> | REP Decimal <LeonaInstruction>
