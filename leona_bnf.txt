@@ -2,48 +2,16 @@
 <RepProgram> ::= <QUOTE> | <LeonaInstruction> <RepProgram>
 
 <LeonaInstruction> ::= 
-	<FORW> <DECIMAL> <PERIOD> | <BACK> <DECIMAL> <PERIOD> |
- 	<LEFT> <DECIMAL> <PERIOD> | <RIGHT> <DECIMAL> <PERIOD> |
-	<UP> <PERIOD> | <DOWN> <PERIOD> | 
-	COLOR <Hex> <PERIOD> | 
-	<REP> <DECIMAL> <QUOTE> <LeonaInstruction> <RepProgram> | <REP> <DECIMAL> <LeonaInstruction>
-
-<F> 	::= f|F
-<O> 	::= o|O
-<R> 	::= r|R
-<W> 	::= w|W
-<B> 	::= b|B
-<A> 	::= a|A
-<C> 	::= c|C
-<K> 	::= k|K
-<L> 	::= l|L
-<E> 	::= e|E
-<T> 	::= t|T
-<I> 	::= i|I
-<G>		::= g|g
-<H>		::= h|H
-<U> 	::= u|U
-<P> 	::= p|P
-<D> 	::= d|D
-<O> 	::= o|O 
-<N> 	::= n|N
+	FORW <DECIMAL> PERIOD | BACK <DECIMAL> PERIOD |
+ 	LEFT <DECIMAL> <PERIOD> | RIGHT <DECIMAL> PERIOD |
+	UP PERIOD | DOWN PERIOD | 
+	COLOR <Hex> PERIOD | 
+	REP <DECIMAL> QUOTE <LeonaInstruction> <RepProgram> | <REP> <DECIMAL> <LeonaInstruction>
 
 
-<FORW> 		::= <F><O><R><W>
-<BACK> 		::= <B><A><C><K>
-<LEFT> 		::= <L><E><F><T>
-<RIGHT> 	::= <R><I><G><H><T>
-<UP> 		::= <U><P>
-<DOWN> 		::= <D><O><W><N>
-COLOR 		::= <C><O><L><O><R>
-<REP> 		::= <R><E><P>
-<QUOTE> 	::= "
-<PERIOD> 	::= .
+<QUOTE> 	::= '"'
+<PERIOD> 	::= '\.'
 
-<Digit>			::= 0|1|2|3|4|5|6|7|8|9
-<Digits> 		::= <Digit> | <Digit> <Digits>
-<NonZeroDigit> 	::= 1|2|3|4|5|6|7|8|9
-<DECIMAL> 		::= <NonZeroDigit> | <NonZeroDigit> <Digits>
+<DECIMAL> 		::= '[1-9][0-9]*'
 
-<HexChar> 		::= <A>|<B>|<C>|<D>|<E>|<F>|<Digit>
-<Hex>			::=	#<HexChar><HexChar><HexChar><HexChar><HexChar><HexChar>
+<Hex>			::= '#[a-fA-F0-9]{6}'
